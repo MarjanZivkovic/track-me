@@ -1,12 +1,15 @@
-const map = L.map("map");
+const map = L.map("map").setView([0, 0], 15);
+const marker = L.marker([0, 0]).addTo(map);
 
-map.setView([0, 0], 15);
+// map.setView([0, 0], 15);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap contributors",
 }).addTo(map);
 
-let marker = L.marker([0, 0]);
+marker.bindTooltip(
+  `<img src="./assets/logo.png" alt="logo" style="width:5rem;" /> <br/> is here!`
+);
 
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
@@ -14,11 +17,11 @@ if (navigator.geolocation) {
       const userLat = position.coords.latitude;
       const userLng = position.coords.longitude;
 
-      marker.setLatLng([userLat, userLng]).addTo(map).bindTooltip("I'm here");
+      marker.setLatLng([userLat, userLng]);
 
-      if (!map.hasLayer(marker)) {
-        marker.addTo(map);
-      }
+      // if (!map.hasLayer(marker)) {
+      //   marker.addTo(map);
+      // }
 
       map.setView([userLat, userLng], 15);
 

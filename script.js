@@ -6,15 +6,23 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap contributors",
 }).addTo(map);
 
+let marker = L.marker([0, 0]);
+
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
     (position) => {
-      let userLat = position.coords.latitude;
-      let userLng = position.coords.longitude;
+      const userLat = position.coords.latitude;
+      const userLng = position.coords.longitude;
+
+      marker.setLatLng([userLat, userLng]).addTo(map).bindTooltip("I'm here");
+
+      if (!map.hasLayer(marker)) {
+        marker.addTo(map);
+      }
 
       map.setView([userLat, userLng], 15);
 
-      L.marker([userLat, userLng]).addTo(map).bindTooltip("I'm here");
+      // L.marker([userLat, userLng]).addTo(map).bindTooltip("I'm here");
     },
     (error) => {
       console.error(`Geolocation Error: ${error.message}`);
